@@ -4,7 +4,6 @@ import 'dotenv/config'
 const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
-    REDIS_HOST: Joi.string().required().description('REDIS Host url'),
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
@@ -65,7 +64,6 @@ const config = {
     },
     from: envVars.EMAIL_FROM,
   },
-  redis: envVars.REDIS_HOST,
   clientUrl: envVars.CLIENT_URL,
 }
 
