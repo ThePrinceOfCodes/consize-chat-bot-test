@@ -102,6 +102,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
 
   // check if the incoming message contains text
   if (message?.type === "text") {
+    console.log(message.from);
     // extract the business number to send the reply from it
     const business_phone_number_id =
       req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
