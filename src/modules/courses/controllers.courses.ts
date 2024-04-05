@@ -76,19 +76,20 @@ export const addQuizToLesson = catchAsync(async (req: Request, res: Response) =>
   }
 })
 
-export const webhook = catchAsync(async (req: Request, res: Response) => {
-  let mode = req.query["hub.mode"]
-  let challenge = req.query["hub.challenge"]
-  let token = req.query["hub.verify_token"]
+export const webhook = catchAsync(async (_: Request, res: Response) => {
+  res.status(200).send("webhook")
+  // let mode = req.query["hub.mode"]
+  // let challenge = req.query["hub.challenge"]
+  // let token = req.query["hub.verify_token"]
 
-  const myToken: string = ""
+  // const myToken: string = ""
 
-  if (mode && token) {
-    if (mode === "subscribe" && token === myToken) {
-    res.status(200).send(challenge)
-    } else {
-      res.send(403)
-    }
-  }
+  // if (mode && token) {
+  //   if (mode === "subscribe" && token === myToken) {
+  //   res.status(200).send(challenge)
+  //   } else {
+  //     res.send(403)
+  //   }
+  // }
  
 })
