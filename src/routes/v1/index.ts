@@ -1,5 +1,4 @@
 import express, { Request, Response, Router } from 'express'
-import authRoute from './auth.route'
 import coursesRoute from './courses.route'
 import lessonsRoute from './lessons.route'
 import sectionsRoute from './sections.route'
@@ -15,10 +14,7 @@ interface IRoute {
 }
 
 const defaultIRoute: IRoute[] = [
-  {
-    path: '/auth',
-    route: authRoute,
-  },
+
   {
     path: '/courses',
     route: coursesRoute
