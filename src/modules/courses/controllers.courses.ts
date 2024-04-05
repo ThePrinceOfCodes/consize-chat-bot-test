@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import catchAsync from '../utils/catchAsync'
 import * as courseService from './service.courses'
 import httpStatus from 'http-status'
+import axios from 'axios'
 
 
 export const createCourseManually = catchAsync(async (req: Request, res: Response) => {
@@ -83,12 +84,61 @@ export const webhook = catchAsync(async (req: Request, res: Response) => {
 
   const myToken: string = "concise"
 
-  if (mode && token) {
-    if (mode === "subscribe" && token === myToken) {
-    res.status(200).send(challenge)
-    } else {
-      res.send(403)
-    }
+  if (mode === "subscribe" && token === myToken) {
+  res.status(200).send(challenge)
+  } else {
+    res.send(403)
   }
  
 })
+
+
+export const postWebhook = catchAsync(async (req: Request, res: Response) => {
+  // log incoming messages
+  console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
+
+  // check if the webhook request contains a message
+  // details on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
+  const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
+
+  // check if the incoming message contains text
+  if (message?.type === "text") {
+    // extract the business number to send the reply from it
+    const business_phone_number_id =
+      req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+
+    // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${"EAANjPOZAZBbccBO8vcZCSVGhNHd57b7sLWtNs8eL3vviX3vnKZBnlEI4deijKLni4OJGXU1SqO0rF8IvWqqG1EY7QEuYQ99kNRCq33ewKKXF9NOmU56HqwotMKSZBwg1n9quefpmZCohCaox3Ybq4dZBgCjwGC9pW62netVPHD0rA6eveb8obaZCdZCfps1QOAzMjhiXOfsN07U5KaVQImvqM8wZDZD"}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: message.from,
+        text: { body: "Echo: " + message.text.body },
+        context: {
+          message_id: message.id, // shows the message as a reply to the original user message
+        },
+      },
+    });
+
+    // mark incoming message as read
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${"EAANjPOZAZBbccBO8vcZCSVGhNHd57b7sLWtNs8eL3vviX3vnKZBnlEI4deijKLni4OJGXU1SqO0rF8IvWqqG1EY7QEuYQ99kNRCq33ewKKXF9NOmU56HqwotMKSZBwg1n9quefpmZCohCaox3Ybq4dZBgCjwGC9pW62netVPHD0rA6eveb8obaZCdZCfps1QOAzMjhiXOfsN07U5KaVQImvqM8wZDZD"}`,
+      },
+      data: {
+        messaging_product: "whatsapp",
+        status: "read",
+        message_id: message.id,
+      },
+    });
+  }
+
+  res.sendStatus(200);
+})
+
