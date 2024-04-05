@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "consize-backend",
+      "name": "consize-chat-bot-test",
       "script": "dist/index.js",
       "node_args": "--experimental-modules --es-module-specifier-resolution=node",
       "instances": 1,
