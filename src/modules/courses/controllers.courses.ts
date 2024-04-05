@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import catchAsync from '../utils/catchAsync'
 import * as courseService from './service.courses'
 import httpStatus from 'http-status'
-import axios from 'axios'
+// import axios from 'axios'
 
 
 export const createCourseManually = catchAsync(async (req: Request, res: Response) => {
