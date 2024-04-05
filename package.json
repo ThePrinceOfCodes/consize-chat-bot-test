@@ -19,9 +19,8 @@
     "compile": "tsc --build",
     "compile:watch": "tsc --build --watch",
     "dev:debug": "node --inspect=5258 -r ts-node/register ./src/index.ts",
-    "templates": "rm -rf ./dist/modules/email/templates && cp -r ./src/modules/email/templates ./dist/modules/email/templates",
     "pre:dev": "cross-env NODE_ENV=development nodemon --experimental-modules --es-module-specifier-resolution=node dist/index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn compile:watch\" \"yarn pre:dev\" \"yarn watch-email-templates\"",
+    "dev": "concurrently --kill-others-on-fail \"yarn compile:watch\" \"yarn pre:dev\"",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest -i --colors --verbose --detectOpenHandles",
     "test:ts": "cross-env NODE_OPTIONS=--experimental-vm-modules jest -i --colors --verbose --detectOpenHandles -- 'ts$'",
     "test:js": "cross-env NODE_OPTIONS=--experimental-vm-modules jest -i --colors --verbose --detectOpenHandles -- 'js$'",
@@ -37,8 +36,7 @@
     "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml up",
     "prepare": "husky install",
     "release": "standard-version && git push --follow-tags origin master",
-    "commit": "git add -A && cz",
-    "watch-email-templates": "nodemon --watch ./src/modules/email/templates --ext 'hbs' --exec 'yarn templates'"
+    "commit": "git add -A && cz"
   },
   "keywords": [
     "node",
