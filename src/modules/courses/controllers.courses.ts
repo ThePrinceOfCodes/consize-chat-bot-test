@@ -81,7 +81,7 @@ export const webhook = catchAsync(async (req: Request, res: Response) => {
   let mode = req.query["hub.mode"]
   let challenge = req.query["hub.challenge"]
   let token = req.query["hub.verify_token"]
-
+  console.log(req.query);
   const myToken: string = "concise"
 
   if (mode === "subscribe" && token === myToken) {
