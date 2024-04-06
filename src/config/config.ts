@@ -21,6 +21,7 @@ const envVarsSchema = Joi.object()
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     CLIENT_URL: Joi.string().required().description('Client url'),
+    GRAPH_API_TOKEN: Joi.string().required().description('whatsapp webhook token')
   })
   .unknown()
 
@@ -31,6 +32,7 @@ if (error) {
 }
 
 const config = {
+  whatsAppToken: envVars.GRAPH_API_TOKEN,
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   mongoose: {
