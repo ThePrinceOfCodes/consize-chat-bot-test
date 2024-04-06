@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import catchAsync from '../utils/catchAsync'
 import * as courseService from './service.courses'
 import httpStatus from 'http-status'
-import config from 'src/config/config'
+import config from '../../config/config'
 import * as whatsappService from '../whatsapp/service.whatsapp'
 
 
