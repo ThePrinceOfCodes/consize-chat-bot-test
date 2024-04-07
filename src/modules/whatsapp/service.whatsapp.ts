@@ -135,7 +135,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
        await nextMessage(index+1, content,to)
   } 
   
-  if (userResponse === "A" || userResponse ===  "B" || userResponse ===  "C") {
+  if (content && content.type === 'quiz') {
     console.log('qwertyuiop');
     if (content) {
       console.log(123344556778);
