@@ -99,9 +99,12 @@ export const sendQuiz = async (to: number, message: any, buttons: any): Promise<
 
 const message = async (content: ContentInterface | undefined, to: number, index: number) => {
   if (content) {
+      console.log(content);
+
     if (content.type === 'text') {
       await sendMessageAndButton(to, content.content,index.toString(), "next");
     }
+
     if (content.type === 'quiz') {
       console.log(content);
     if (content.options && content.question) {
