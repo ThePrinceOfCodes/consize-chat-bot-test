@@ -1,11 +1,11 @@
-import { courseControllers } from "../../modules/courses";
+import { WhatsappController } from "../../modules/whatsapp";
 import express, { Router } from "express";
 
 
 const router: Router = express.Router();
 
-router.get("/", courseControllers.webhook);
-router.post("/", courseControllers.postWebhook);
-router.get("/send-invitation", courseControllers.sendCourseInvitation)
+router.get("/", WhatsappController.webhook);
+router.post("/", WhatsappController.postWebhook);
+router.get("/send-invitation", WhatsappController.sendCourseInvitation)
 
 export default router

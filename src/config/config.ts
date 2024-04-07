@@ -21,7 +21,8 @@ const envVarsSchema = Joi.object()
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     CLIENT_URL: Joi.string().required().description('Client url'),
-    GRAPH_API_TOKEN: Joi.string().required().description('whatsapp webhook token')
+    GRAPH_API_TOKEN: Joi.string().required().description('whatsapp webhook token'),
+    BUSINESS_ID: Joi.string().required().description('whatsapp business id')
   })
   .unknown()
 
@@ -32,6 +33,7 @@ if (error) {
 }
 
 const config = {
+  business_id: envVars.BUSINESS_ID,
   whatsAppToken: envVars.GRAPH_API_TOKEN,
   env: envVars.NODE_ENV,
   port: envVars.PORT,
