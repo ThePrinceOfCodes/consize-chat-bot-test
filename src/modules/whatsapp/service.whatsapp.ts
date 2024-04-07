@@ -70,21 +70,21 @@ export const sendQuiz = async (to: number, message: any, buttons: any, index: st
               {
                 type: "reply",
                     reply: {
-                        id: index,
+                        id: "A",
                         title: buttons[0]
                     }
               },
               {
                 type: "reply",
                     reply: {
-                        id: index+" ",
+                        id: "B",
                         title: buttons[1]
                     }
               },
               {
                 type: "reply",
                     reply: {
-                        id: index+"   ",
+                        id: "C",
                         title: buttons[2]
                     }
                 },
