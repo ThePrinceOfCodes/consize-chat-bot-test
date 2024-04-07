@@ -136,6 +136,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   } 
   
   if (userResponse in ["A", "B", "C"] && content) {
+    console.log(123344556778);
     const userChoice = userResponse;
 
     console.log(`user choice ${userChoice}`);
@@ -153,8 +154,9 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     }
     index++; 
     await nextMessage(index, content, to);
-}
-
+ }
+ 
+  console.log("no conditions met");
  
 }
      
