@@ -22,7 +22,7 @@ const envVarsSchema = Joi.object()
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     CLIENT_URL: Joi.string().required().description('Client url'),
     GRAPH_API_TOKEN: Joi.string().required().description('whatsapp webhook token'),
-    BUSINESS_ID: Joi.string().required().description('whatsapp business id')
+    BUSINESS_ID: Joi.number().required().description('whatsapp business id')
   })
   .unknown()
 
