@@ -100,7 +100,8 @@ const message = async (content: ContentInterface | undefined,to:number, index: n
       await sendMessageAndButton(to, content.content,index.toString(), "next");
     } else if (content && content.type === 'quiz') {
     if (content.options && content.content) {
-        const question: string = content.content
+      const question: string = content.content
+      console.log(question, content.options);
         // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
         await sendQuiz(to, question, content.options);
 
