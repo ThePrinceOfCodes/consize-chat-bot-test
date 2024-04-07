@@ -96,7 +96,6 @@ export const handleMessage = async (index: any, to: number, userResponse: string
     
   const content: ContentInterface | undefined = contents[index];
 
-  console.log(userResponse);
   if (userResponse === 'start') {
     await message(content,to)
   }
