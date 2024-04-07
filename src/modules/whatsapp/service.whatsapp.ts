@@ -100,9 +100,8 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     await message(content,to,index)
   }
 
-  if (userResponse === 'next') { 
-    index++; 
-       await nextMessage(index, content,to)
+  if (userResponse === 'next') {  
+       await nextMessage(index+1, content,to)
     } else {
         if (content && content.type === 'text') {
           await sendMessageAndButton(to, content.content, index.toString(), "next");
