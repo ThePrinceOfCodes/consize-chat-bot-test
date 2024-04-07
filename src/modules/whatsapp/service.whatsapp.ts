@@ -32,7 +32,7 @@ export const sendMessageAndButton = async (to: number, message: any, bId: string
           action: {
               buttons: [{ type: "reply",
                     reply: {
-                        id: bId,
+                        id: bId.toString,
                         title: reply
                     }
                 },
@@ -71,9 +71,9 @@ export const sendQuiz = async (to: number, message: any, buttons: any): Promise<
 }
 
 
-const message = async (content: ContentInterface | undefined,to:number) => {
+const message = async (content: ContentInterface | undefined,to:number, index: number) => {
   if (content && content.type === 'text') {
-      await sendMessageAndButton(to, content.content,"Next", "next");
+      await sendMessageAndButton(to, content.content,index.toString(), "next");
     } else if (content && content.type === 'quiz') {
     if (content.options && content.content) {
         const question: string = content.content
@@ -86,28 +86,26 @@ const message = async (content: ContentInterface | undefined,to:number) => {
 
 const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number) => {
   if (index < contents.length) {
-    await message(content,to)
+    await message(content,to, index)
   } else {
       await sendMessageAndButton(to, "End of the course.", "finish", "finish"); 
   }
 }
 
-export const handleMessage = async (index: any, to: number, userResponse: string) => {
+export const handleMessage = async (index: number, to: number, userResponse: string) => {
     
   const content: ContentInterface | undefined = contents[index];
 
   if (userResponse === 'start') {
-    await message(content,to)
+    await message(content,to,index)
   }
 
   if (userResponse === 'next') { 
-    
     index++; 
-    console.log(index);
        await nextMessage(index, content,to)
     } else {
         if (content && content.type === 'text') {
-          await sendMessageAndButton(to, content.content, "Next", "next");
+          await sendMessageAndButton(to, content.content, index.toString(), "next");
         } else if (content && content.type === 'quiz') {
           const userChoice = parseInt(userResponse);
           console.log(`user choice ${userChoice}`);
@@ -116,11 +114,11 @@ export const handleMessage = async (index: any, to: number, userResponse: string
 
             if (userChoice === correctAnswerIndex) {
               let message = "you got the right answer";
-              await sendMessageAndButton(to, message,"Next", "next");
+              await sendMessageAndButton(to, message, index.toString(), "next");
 
             } else {
               let message = `Incorrect!: ${content.answerExplanation}`;
-              await sendMessageAndButton(to, message,"Next", "next");
+              await sendMessageAndButton(to, message, index.toString(), "next");
             }
           index++; 
           await nextMessage(index, content,to)
