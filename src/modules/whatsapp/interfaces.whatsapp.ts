@@ -4,6 +4,6 @@ export interface ContentInterface {
     content?: string;
     question?: string;
     options?: string[];
-    answerIndex?: number;
+    answerIndex?: string;
     answerExplanation?:string
 }

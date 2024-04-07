@@ -6,9 +6,9 @@ export const contents: ContentInterface[] = [
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
-    { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin', 'Madrid'], answerIndex: 1 },
+    { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A'},
   { type: 'text', content: 'Congratulations! You have completed the course.' },
-       { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin', 'Madrid'], answerIndex: 1 },
+       { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'C' },
       { type: 'text', content: 'Congratulations! You have completed the course.' }
    
 ];
@@ -47,7 +47,7 @@ export const sendMessageAndButton = async (to: number, message: any, bId: string
 }
 
 export const sendQuiz = async (to: number, message: any, buttons: any): Promise<void> => {
-    await axios({
+   await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
       headers: {
@@ -64,7 +64,29 @@ export const sendQuiz = async (to: number, message: any, buttons: any): Promise<
             text: message
         },
           action: {
-              buttons: buttons
+            buttons: [
+              {
+                type: "reply",
+                    reply: {
+                        id: "A",
+                        title: buttons[0]
+                    }
+              },
+              {
+                type: "reply",
+                    reply: {
+                        id: "B",
+                        title: buttons[1]
+                    }
+              },
+              {
+                type: "reply",
+                    reply: {
+                        id: "C",
+                        title: buttons[2]
+                    }
+                },
+                ]
           }
         }
         
@@ -79,8 +101,8 @@ const message = async (content: ContentInterface | undefined,to:number, index: n
     } else if (content && content.type === 'quiz') {
     if (content.options && content.content) {
         const question: string = content.content
-        const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
-        await sendQuiz(to, question, buttons);
+        // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
+        await sendQuiz(to, question, content.options);
 
       }
     }
@@ -108,7 +130,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
         if (content && content.type === 'text') {
           await sendMessageAndButton(to, content.content, index.toString(), "next");
         } else if (content && content.type === 'quiz') {
-          const userChoice = parseInt(userResponse);
+          const userChoice = userResponse;
           console.log(`user choice ${userChoice}`);
             const correctAnswerIndex = content.answerIndex;
           console.log(`correct answer ${correctAnswerIndex}`);
