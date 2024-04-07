@@ -6,7 +6,9 @@ export const contents: ContentInterface[] = [
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
-    { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A'},
+  { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A' },
+        { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A'},
+            { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A'},
   { type: 'text', content: 'Congratulations! You have completed the course.' },
        { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'C' },
       { type: 'text', content: 'Congratulations! You have completed the course.' }
@@ -99,8 +101,8 @@ const message = async (content: ContentInterface | undefined,to:number, index: n
   if (content && content.type === 'text') {
       await sendMessageAndButton(to, content.content,index.toString(), "next");
     } else if (content && content.type === 'quiz') {
-    if (content.options && content.content) {
-      const question: string = content.content
+    if (content.options && content.question) {
+      const question: string = content.question
       console.log(question, content.options);
         // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
         await sendQuiz(to, question, content.options);
