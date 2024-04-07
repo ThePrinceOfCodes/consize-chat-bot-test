@@ -128,25 +128,20 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   const content: ContentInterface | undefined = contents[index];
 
   if (userResponse === 'start') {
-    await message(content,to,index)
+    await message(content,to,0)
   }
 
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
   } 
-
-  if (content) {
-    if (content.type === 'text') {
-    await sendMessageAndButton(to, content.content, index.toString(), "next");
-  }
   
-  if (userResponse in ["A", "B", "C"]) {
+  if (userResponse in ["A", "B", "C"] && content) {
     const userChoice = userResponse;
 
     console.log(`user choice ${userChoice}`);
 
     const correctAnswerIndex = content.answerIndex;
-    
+
     console.log(`correct answer ${correctAnswerIndex}`);
 
     if (userChoice === correctAnswerIndex) {
@@ -163,7 +158,6 @@ export const handleMessage = async (index: number, to: number, userResponse: str
  
 }
      
-}
 
 export const sendWelcomeMessage = async (to: number) => {
   const welcomeMessage: string = "Welcome... You've been enrolled to this course...Please click on the button to continue to course"
