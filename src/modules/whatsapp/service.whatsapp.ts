@@ -99,14 +99,14 @@ export const sendQuiz = async (to: number, message: any, buttons: any): Promise<
 
 const message = async (content: ContentInterface | undefined, to: number, index: number) => {
   if (content) {
-      console.log(content);
+      console.log(123);
 
     if (content.type === 'text') {
       await sendMessageAndButton(to, content.content,index.toString(), "next");
     }
 
     if (content.type === 'quiz') {
-      console.log(content);
+      console.log(123456);
     if (content.options && content.question) {
       const question: string = content.question
       console.log(question, content.options);
@@ -121,6 +121,7 @@ const message = async (content: ContentInterface | undefined, to: number, index:
 
 const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number) => {
   if (index < contents.length) {
+    console.log(content);
     await message(content,to, index)
   } else {
       await sendMessageAndButton(to, "End of the course.", "finish", "finish"); 
