@@ -135,8 +135,10 @@ export const handleMessage = async (index: number, to: number, userResponse: str
        await nextMessage(index+1, content,to)
   } 
   
-  if (userResponse in ["A", "B", "C"] && content) {
-    console.log(123344556778);
+  if (userResponse in ["A", "B", "C"]) {
+    console.log('qwertyuiop');
+    if (content) {
+      console.log(123344556778);
     const userChoice = userResponse;
 
     console.log(`user choice ${userChoice}`);
@@ -154,6 +156,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     }
     index++; 
     await nextMessage(index, content, to);
+    }
  }
  
   console.log("no conditions met");
