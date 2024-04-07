@@ -77,14 +77,14 @@ export const sendQuiz = async (to: number, message: any, buttons: any, index: st
               {
                 type: "reply",
                     reply: {
-                        id: index,
+                        id: index+" ",
                         title: buttons[1]
                     }
               },
               {
                 type: "reply",
                     reply: {
-                        id: index,
+                        id: index+"   ",
                         title: buttons[2]
                     }
                 },
@@ -130,7 +130,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   if (userResponse === 'start') {
     await message(content,to,0)
   }
-  
+
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
   } 
