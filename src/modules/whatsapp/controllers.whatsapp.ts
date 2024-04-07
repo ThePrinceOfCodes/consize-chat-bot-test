@@ -35,7 +35,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
       userCurrentIndex = 0
     } else {
       userCurrentIndex = parseInt(message.interactive.button_reply.id)
-      console.log(userCurrentIndex +"qwerty");
+      console.log(message.interactive.button_reply.id +"  qwerty");
     }
 
     await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse) 

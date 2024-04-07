@@ -32,7 +32,7 @@ export const sendMessageAndButton = async (to: number, message: any, bId: string
           action: {
               buttons: [{ type: "reply",
                     reply: {
-                        id: bId.toString,
+                        id: bId,
                         title: reply
                     }
                 },
