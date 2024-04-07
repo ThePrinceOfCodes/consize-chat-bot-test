@@ -48,7 +48,7 @@ export const sendMessageAndButton = async (to: number, message: any, bId: string
     });
 }
 
-export const sendQuiz = async (to: number, message: any, buttons: any, index: string): Promise<void> => {
+export const sendQuiz = async (to: number, message: any, buttons: any): Promise<void> => {
    await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
@@ -107,7 +107,7 @@ const message = async (content: ContentInterface | undefined, to: number, index:
     if (content.options && content.question) {
       const question: string = content.question
       // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
-      await sendQuiz(to, question, content.options, index.toString());
+      await sendQuiz(to, question, content.options);
 
       }
     }
