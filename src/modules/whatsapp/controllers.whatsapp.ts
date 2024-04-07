@@ -26,9 +26,6 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
 
   if (message?.type === "text") {
   
-    const business_phone_number_id = req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-    console.log(business_phone_number_id);
-
     const customerNumber = message.from
 
     const userResponse = message.text.body.trim().toUpperCase();
