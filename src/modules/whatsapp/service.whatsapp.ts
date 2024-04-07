@@ -6,11 +6,11 @@ export const contents: ContentInterface[] = [
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
-  { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A' },
-        { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A'},
-            { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'A'},
+  { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd" },
+        { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd"},
+            { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd"},
   { type: 'text', content: 'Congratulations! You have completed the course.' },
-       { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], answerIndex: 'C' },
+       { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd"},
       { type: 'text', content: 'Congratulations! You have completed the course.' }
    
 ];
@@ -48,7 +48,7 @@ export const sendMessageAndButton = async (to: number, message: any, bId: string
     });
 }
 
-export const sendQuiz = async (to: number, message: any, buttons: any): Promise<void> => {
+export const sendQuiz = async (to: number, message: any, buttons: any, index: string): Promise<void> => {
    await axios({
       method: "POST",
       url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
@@ -70,21 +70,21 @@ export const sendQuiz = async (to: number, message: any, buttons: any): Promise<
               {
                 type: "reply",
                     reply: {
-                        id: "A",
+                        id: index,
                         title: buttons[0]
                     }
               },
               {
                 type: "reply",
                     reply: {
-                        id: "B",
+                        id: index,
                         title: buttons[1]
                     }
               },
               {
                 type: "reply",
                     reply: {
-                        id: "C",
+                        id: index,
                         title: buttons[2]
                     }
                 },
@@ -107,7 +107,7 @@ const message = async (content: ContentInterface | undefined, to: number, index:
     if (content.options && content.question) {
       const question: string = content.question
       // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
-      await sendQuiz(to, question, content.options);
+      await sendQuiz(to, question, content.options, index.toString());
 
       }
     }
@@ -130,20 +130,18 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   if (userResponse === 'start') {
     await message(content,to,0)
   }
-
+  else
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
   } 
-  
-  if (content && content.type === 'quiz') {
-    console.log('qwertyuiop');
-    if (content) {
-      console.log(123344556778);
+  else
+  if (content && content?.options && (userResponse in content?.options)) {
+    console.log(123344556778);
     const userChoice = userResponse;
 
     console.log(`user choice ${userChoice}`);
 
-    const correctAnswerIndex = content.answerIndex;
+    const correctAnswerIndex = content.correctAnswer;
 
     console.log(`correct answer ${correctAnswerIndex}`);
 
@@ -156,7 +154,6 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     }
     index++; 
     await nextMessage(index, content, to);
-    }
  }
  
   console.log("no conditions met");
