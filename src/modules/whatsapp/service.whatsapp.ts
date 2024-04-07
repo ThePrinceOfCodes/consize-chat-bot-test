@@ -99,19 +99,15 @@ export const sendQuiz = async (to: number, message: any, buttons: any): Promise<
 
 const message = async (content: ContentInterface | undefined, to: number, index: number) => {
   if (content) {
-      console.log(123);
-
     if (content.type === 'text') {
       await sendMessageAndButton(to, content.content,index.toString(), "next");
     }
 
     if (content.type === 'quiz') {
-      console.log(123456);
     if (content.options && content.question) {
       const question: string = content.question
-      console.log(question, content.options);
-        // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
-        await sendQuiz(to, question, content.options);
+      // const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
+      await sendQuiz(to, question, content.options);
 
       }
     }
@@ -121,7 +117,6 @@ const message = async (content: ContentInterface | undefined, to: number, index:
 
 const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number) => {
   if (index < contents.length) {
-    console.log(content);
     await message(content,to, index)
   } else {
       await sendMessageAndButton(to, "End of the course.", "finish", "finish"); 
@@ -138,27 +133,36 @@ export const handleMessage = async (index: number, to: number, userResponse: str
 
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
-    } else {
-        if (content && content.type === 'text') {
-          await sendMessageAndButton(to, content.content, index.toString(), "next");
-        } else if (content && content.type === 'quiz') {
-          const userChoice = userResponse;
-          console.log(`user choice ${userChoice}`);
-            const correctAnswerIndex = content.answerIndex;
-          console.log(`correct answer ${correctAnswerIndex}`);
-
-            if (userChoice === correctAnswerIndex) {
-              let message = "you got the right answer";
-              await sendMessageAndButton(to, message, index.toString(), "next");
-
-            } else {
-              let message = `Incorrect!: ${content.answerExplanation}`;
-              await sendMessageAndButton(to, message, index.toString(), "next");
-            }
-          index++; 
-          await nextMessage(index, content,to)
-      }    
   } 
+
+  if (content) {
+    if (content.type === 'text') {
+    await sendMessageAndButton(to, content.content, index.toString(), "next");
+  }
+  
+  if (userResponse in ["A", "B", "C"]) {
+    const userChoice = userResponse;
+
+    console.log(`user choice ${userChoice}`);
+
+    const correctAnswerIndex = content.answerIndex;
+    
+    console.log(`correct answer ${correctAnswerIndex}`);
+
+    if (userChoice === correctAnswerIndex) {
+        let message = "you got the right answer";
+        await sendMessageAndButton(to, message, index.toString(), "next");
+    } else {
+        let message = `Incorrect!: ${content.answerExplanation}`;
+        await sendMessageAndButton(to, message, index.toString(), "next");
+    }
+    index++; 
+    await nextMessage(index, content, to);
+}
+
+ 
+}
+     
 }
 
 export const sendWelcomeMessage = async (to: number) => {
