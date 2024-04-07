@@ -4,6 +4,8 @@ import { ContentInterface } from "./interfaces.whatsapp";
 
 export const contents: ContentInterface[] = [
     { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
+    { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
+    { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
     { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin', 'Madrid'], answerIndex: 1 },
   { type: 'text', content: 'Congratulations! You have completed the course.' },
        { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin', 'Madrid'], answerIndex: 1 },
