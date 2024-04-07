@@ -130,11 +130,11 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   if (userResponse === 'start') {
     await message(content,to,0)
   }
-  else
+  
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
   } 
-  else
+
   if (content && content?.options && (userResponse in content?.options)) {
     console.log(123344556778);
     const userChoice = userResponse;
@@ -152,7 +152,6 @@ export const handleMessage = async (index: number, to: number, userResponse: str
         let message = `Incorrect!: ${content.answerExplanation}`;
         await sendMessageAndButton(to, message, index.toString(), "next");
     }
-    index++; 
     await nextMessage(index+1, content, to);
  }
  
