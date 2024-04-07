@@ -11,56 +11,88 @@ export const contents: ContentInterface[] = [
    
 ];
 
-export const sendWhatsAppMessage = async(to:string, message: any):Promise<void>=>{
-  await axios({
-    method: "POST",
-    url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
-    headers: {
-      Authorization: `Bearer ${config.whatsAppToken}`,
-    },
-    data: {
-      messaging_product: "whatsapp",
+
+export const sendMessageAndButton = async (to: number, message: any, bId: string, reply: string): Promise<void> => {
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${config.whatsAppToken}`,
+      },
+      data: {
+       messaging_product: "whatsapp",
+      recipient_type: "individual",
       to: to,
-      template: message,
-    },
-  });
-}
-
-export const sendNextButton = async (to:string, title: string, payload: string) => {
-  const button = [{ type: 'reply', title: title, payload: payload }];
-  await sendWhatsAppMessage(to, button)
-}
-
-const message = async (content: ContentInterface | undefined,to:string) => {
-  if (content && content.type === 'text') {
-      await sendWhatsAppMessage(to, content.content);
-      await sendNextButton(to, "Next", "next");
-    } else if (content && content.type === 'quiz') {
-      if (content.options) {
-        const question = {
-          text: content.question,
-          buttons: content.options.map((option, index) => ({ type: 'reply', title: option, payload: index.toString() }))
+      type: "interactive",
+      interactive: {
+        type: "button",
+        body: {
+            text: message
+        },
+          action: {
+              buttons: [{ type: "reply",
+                    reply: {
+                        id: bId,
+                        title: reply
+                    }
+                },
+                ]
+          }
         }
-        await sendWhatsAppMessage(to, question);
+        
+      },
+    });
+}
+
+export const sendQuiz = async (to: number, message: any, buttons: any): Promise<void> => {
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${config.whatsAppToken}`,
+      },
+      data: {
+       messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: to,
+      type: "interactive",
+      interactive: {
+        type: "button",
+        body: {
+            text: message
+        },
+          action: {
+              buttons: buttons
+          }
+        }
+        
+      },
+    });
+}
+
+
+const message = async (content: ContentInterface | undefined,to:number) => {
+  if (content && content.type === 'text') {
+      await sendMessageAndButton(to, content.content,"Next", "next");
+    } else if (content && content.type === 'quiz') {
+    if (content.options && content.content) {
+        const question: string = content.content
+        const buttons: any = content.options.map((option, index) => ({ type: 'reply', reply : {id:  index.toString(), title: option} }))
+        await sendQuiz(to, question, buttons);
 
       }
     }
 }
 
-const nextMessage = async (index:  number, content: ContentInterface | undefined, to: string) => {
+const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number) => {
   if (index < contents.length) {
     await message(content,to)
   } else {
-      await sendWhatsAppMessage(to, "End of the course."); 
+      await sendMessageAndButton(to, "End of the course.", "finish", "finish"); 
   }
 }
 
-const sendMessageAndNextButton = async (to: string, message: string |  undefined) => {
-  await sendWhatsAppMessage(to, message);
-  await sendNextButton(to, "Next", "next");
-}
-
-export const handleMessage = async (index: any, to: string, userResponse: string) => {
+export const handleMessage = async (index: any, to: number, userResponse: string) => {
     
   const content: ContentInterface | undefined = contents[index];
 
@@ -73,18 +105,20 @@ export const handleMessage = async (index: any, to: string, userResponse: string
        await nextMessage(index, content,to)
     } else {
         if (content && content.type === 'text') {
-            await sendMessageAndNextButton(to, content.content);
+          await sendMessageAndButton(to, content.content, "Next", "next");
         } else if (content && content.type === 'quiz') {
-            const userChoice = parseInt(userResponse); 
+          const userChoice = parseInt(userResponse);
+          console.log(`user choice ${userChoice}`);
             const correctAnswerIndex = content.answerIndex;
+          console.log(`correct answer ${correctAnswerIndex}`);
 
             if (userChoice === correctAnswerIndex) {
               let message = "you got the right answer";
-              await sendMessageAndNextButton(to, message);
+              await sendMessageAndButton(to, message,"Next", "next");
 
             } else {
               let message = `Incorrect!: ${content.answerExplanation}`;
-              await sendMessageAndNextButton(to, message);;
+              await sendMessageAndButton(to, message,"Next", "next");
             }
           index++; 
           await nextMessage(index, content,to)
@@ -92,8 +126,7 @@ export const handleMessage = async (index: any, to: string, userResponse: string
   } 
 }
 
-export const sendWelcomeMessage = async (to: string) => {
-  const welcomeMessage: string = "Welcome... You've been enrolled to this course.../n please click on the button to continue to course"
-  await sendWhatsAppMessage(to, welcomeMessage)
-  await sendNextButton(to, "Continue", "start")
+export const sendWelcomeMessage = async (to: number) => {
+  const welcomeMessage: string = "Welcome... You've been enrolled to this course...Please click on the button to continue to course"
+  await sendMessageAndButton(to, welcomeMessage, "start", "continue" )
 }
