@@ -153,7 +153,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
         await sendMessageAndButton(to, message, index.toString(), "next");
     }
     index++; 
-    await nextMessage(index, content, to);
+    await nextMessage(index+1, content, to);
  }
  
   console.log("no conditions met");
