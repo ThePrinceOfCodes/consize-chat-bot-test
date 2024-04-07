@@ -27,10 +27,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
   if (message?.type === "interactive") {
     const customerNumber = message.from
 
-    console.log(customerNumber + "customer message");
     const userResponse = message.interactive.button_reply.title;
-
-    console.log(userResponse + " user response");
     
     let userCurrentIndex = 0;
 
