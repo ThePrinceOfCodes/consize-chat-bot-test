@@ -23,20 +23,20 @@ export const webhook = catchAsync(async (req: Request, res: Response) => {
 export const postWebhook = catchAsync(async (req: Request, res: Response) => {
   
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
+  const customerNumber = message.from
 
-  console.log(message?.type);
-
-  if (message?.type === "text") {
+  if (message?.type === "interactive") {
   
-    const customerNumber = message.from
-
     const userResponse = message.text.body.trim().toUpperCase();
 
     let userCurrentIndex = 0;
 
     await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse) 
 
+  } else {
+    await whatsappService.sendMessageAndButton(customerNumber, "please text message are not allowed, Kindly interact by using the buttons provided", "Next", "next")
   }
+
   res.sendStatus(200);
 
 })
