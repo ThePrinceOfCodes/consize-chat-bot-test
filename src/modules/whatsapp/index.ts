@@ -1,3 +1,3 @@
 import * as whatsappService from './service.whatsapp'
-
-export { whatsappService }
+import * as WhatsAppInterface from './interfaces.whatsapp'
+export { whatsappService, WhatsAppInterface }

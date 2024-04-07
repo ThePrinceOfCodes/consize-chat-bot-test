@@ -2,9 +2,7 @@ import { Request, Response } from 'express'
 import catchAsync from '../utils/catchAsync'
 import * as courseService from './service.courses'
 import httpStatus from 'http-status'
-import config from '../../config/config'
 import * as whatsappService from '../whatsapp/service.whatsapp'
-
 
 export const createCourseManually = catchAsync(async (req: Request, res: Response) => {
   const createdCourse = await courseService.createCourse(req.body, req.user.team)
@@ -93,9 +91,8 @@ export const webhook = catchAsync(async (req: Request, res: Response) => {
  
 })
 
-
 export const postWebhook = catchAsync(async (req: Request, res: Response) => {
-  const whatsAppToken = config.whatsAppToken
+  
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
 
   if (message?.type === "text") {
@@ -103,28 +100,23 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     const business_phone_number_id = req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
     const customerNumber = message.from
 
-    const userResponse = message.text.body.trim().toUpperCase(); // Extract user's response and convert to uppercase for comparison
+    const userResponse = message.text.body.trim().toUpperCase();
 
-    // check the user's response against the correct answer
-    let feedbackMessage = "";
-    let nextQuestion = "";
+    let userCurrentIndex = 0;
 
-    if (userResponse === "B") { // Assuming "B" is the correct answer
-      feedbackMessage = "Correct answer! Well done!";
-      nextQuestion = "Next question: What is the capital of Italy?\n\nA) Rome\nB) Paris\nC) Berlin\nD) Madrid"; // Example next question
-    } else {
-      feedbackMessage = "Incorrect answer. Try again!";
-      nextQuestion = "Retry: What is the capital of France?\n\nA) London\nB) Paris\nC) Berlin\nD) Madrid"; // Retry the same question
-    }
-
-    // send feedback message
-    await whatsappService.sendWhatsAppMessage(customerNumber, feedbackMessage, whatsAppToken,business_phone_number_id);
-
-    // send next quiz question
-    await whatsappService.sendWhatsAppMessage(customerNumber, nextQuestion, whatsAppToken,business_phone_number_id);
+    await whatsappService.handleMessage(userCurrentIndex, customerNumber, business_phone_number_id, userResponse) 
 
   }
-
   res.sendStatus(200);
+
 })
 
+export const sendCourseInvitation = catchAsync(async (_: Request, res: Response) => {
+  const clients: string[] = ['2348138505718'] 
+
+  clients.forEach( async (client) => {
+    await whatsappService.sendWelcomeMessage(client, '258823020652150')
+  })
+
+  res.status(httpStatus.OK).send('invite sent successfully')
+})
