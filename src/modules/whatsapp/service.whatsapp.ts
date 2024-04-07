@@ -130,12 +130,11 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   if (userResponse === 'start') {
     await message(content,to,0)
   }
-
+  else
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
-  } 
-
-  if (content && content?.options && (userResponse in content?.options)) {
+  } else {
+    if (content) {
     console.log(123344556778);
     const userChoice = userResponse;
 
@@ -154,8 +153,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     }
     await nextMessage(index+1, content, to);
  }
- 
-  console.log("no conditions met");
+  }
  
 }
      
