@@ -25,6 +25,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
 
   if (message?.type === "interactive") {
+    console.log(message);
     const customerNumber = message.from
 
     const userResponse = message.interactive.button_reply.title;
