@@ -101,6 +101,7 @@ export const handleMessage = async (index: any, to: number, userResponse: string
   }
 
   if (userResponse === 'next') { 
+    
     index++; 
     console.log(index);
        await nextMessage(index, content,to)
