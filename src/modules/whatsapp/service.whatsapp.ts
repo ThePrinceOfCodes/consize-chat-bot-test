@@ -133,7 +133,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
        await nextMessage(index+1, content,to)
   } else {
     
-    const data: string[] = userResponse.split(" ")
+    const data = userResponse.split(" ")
     
     console.log(data+ " hbgvgff");
     
