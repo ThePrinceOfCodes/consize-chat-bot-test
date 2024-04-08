@@ -30,7 +30,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     const userResponse = message.interactive.button_reply.title;
     let userCurrentIndex;
 
-
+console.log(userResponse);
     if (userResponse === 'start') {
       userCurrentIndex = 0
     } else
