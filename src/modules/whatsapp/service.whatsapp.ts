@@ -9,7 +9,7 @@ export const contents: ContentInterface[] = [
   { 
     type: "quiz",
     question: "What does HTML stand for?",
-    options: ["Hypertext Markup Language", "Hyperlink and Text Markup Language", "Highly Textured Markup Language"],
+    options: ["Hypertext", "Markup Language", "Language"],
     correctAnswer: "Hypertext Markup Language",
     answerExplanation: "HTML stands for Hypertext Markup Language."
   },
@@ -53,10 +53,10 @@ export const contents: ContentInterface[] = [
   { type: "text", content: "In this lesson, you'll learn how to create hyperlinks in HTML to link to other web pages." },
   { 
     type: "quiz",
-    question: "What is the correct HTML for creating a hyperlink?",
-    options: ["<a href='http://example.com'>Example</a>", "<link href='http://example.com'>Example</link>", "<href='http://example.com'>Example</>"],
-    correctAnswer: "<a href='http://example.com'>Example</a>",
-    answerExplanation: "The correct HTML for creating a hyperlink is <a href='http://example.com'>Example</a>."
+    question: "Which tag is used to make text bold in HTML?",
+    options: ["<b>", "<bold>", "<strong>"],
+    correctAnswer: "<strong>",
+    answerExplanation: "The <strong> tag is used to make text bold in HTML."
   },
   { type: "text", content: "Lesson 7: HTML Images" },
   { type: "text", content: "In this lesson, you'll learn how to add images to your HTML pages." },
