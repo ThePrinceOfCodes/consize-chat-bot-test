@@ -32,6 +32,8 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     let userCurrentIndex;
     let enrollment = await Enrollment.findOne({userMobile: customerNumber});
 
+    console.log(enrollment + "   enrolment");
+
     if (userResponse === 'start') {
       userCurrentIndex = 0
     } else
@@ -43,6 +45,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     }
 
     if (enrollment) {
+      console.log(enrollment.course + " ...course");
       await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse, enrollment.course) 
     } else {
       await whatsappService.sendMessage(customerNumber, "you are not enrolled in this course")

@@ -228,6 +228,7 @@ export const handleMessage = async (index: any, to: number, userResponse: string
   //get from redis
   const content: ContentInterface | undefined = await courseService.getCourseFlow(course)
 
+  console.log(content + " ...content");
   if (userResponse === 'start') {
     await message(content,to,0)
   }
