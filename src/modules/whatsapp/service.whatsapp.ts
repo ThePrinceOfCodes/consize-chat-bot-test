@@ -135,7 +135,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     
     const data = userResponse.split(" ")
     
-    console.log(data+ " hbgvgff");
+    console.log(userResponse);
     
     //@ts-ignore
     const OptionsIndex:number = parseInt(data[0])
