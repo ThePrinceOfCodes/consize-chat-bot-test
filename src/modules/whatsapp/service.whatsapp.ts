@@ -5,7 +5,7 @@ import { ContentInterface } from "./interfaces.whatsapp";
 export const contents: ContentInterface[] = [
 
   { type: "text", content: "Lesson 1: Introduction to HTML" },
-  { type: "text", content: "In this lesson, you'll learn the basics of HTML." },
+  { type: "text", content: "In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML." },
   { 
     type: "quiz",
     question: "What does HTML stand for?",
@@ -216,16 +216,11 @@ export const handleMessage = async (index: any, to: number, userResponse: string
     
     const data = index.split(" ")
     
-    const OptionsIndex:number = parseInt(data[0])
+    const OptionsIndex:number = parseInt(data[0])- 1
     const userChoice = data[1]
-    console.log(userChoice + "uc");
-
-    console.log(userResponse + " ur");
     const quizContent = contents[OptionsIndex]
-    console.log(quizContent);
+    
     if (quizContent) {
-    console.log(quizContent.correctAnswer + "ca");
-
     if (userChoice === quizContent.correctAnswer) {
         let message = "you got the right answer";
         await sendMessageAndButton(to, message, index.toString(), "next");
