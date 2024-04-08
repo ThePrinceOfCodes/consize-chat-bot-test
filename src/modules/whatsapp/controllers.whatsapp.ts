@@ -31,7 +31,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     let userCurrentIndex;
 
 console.log(userResponse);
-    if (userResponse === 'continue') {
+    if (userResponse === 'start') {
       userCurrentIndex = 0
     } else
     if (userResponse === 'next') {

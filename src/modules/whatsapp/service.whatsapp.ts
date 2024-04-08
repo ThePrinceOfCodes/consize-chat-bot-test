@@ -3,14 +3,7 @@ import config from '../../config/config'
 import { ContentInterface } from "./interfaces.whatsapp";
 
 export const contents: ContentInterface[] = [
-  { type: "text", content: "Welcome to the WhatsApp chat bot course!" },
-  { 
-    type: "quiz",
-    question: "What is the capital of France?",
-    options: ["London", "Paris", "Berlin"],
-    correctAnswer: "Paris",
-    answerExplanation: "Paris is the capital of France."
-  },
+
   { type: "text", content: "Lesson 1: Introduction to HTML" },
   { type: "text", content: "In this lesson, you'll learn the basics of HTML." },
   { 
@@ -247,5 +240,5 @@ export const handleMessage = async (index: any, to: number, userResponse: string
 
 export const sendWelcomeMessage = async (to: number) => {
   const welcomeMessage: string = "Welcome... You've been enrolled to this course...Please click on the button to continue to course"
-  await sendMessageAndButton(to, welcomeMessage, "start", "start" )
+  await sendMessageAndButton(to, welcomeMessage, "0", "start" )
 }
