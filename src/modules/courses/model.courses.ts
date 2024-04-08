@@ -1,28 +1,8 @@
-import { CourseInterface, CourseInterfaceModel, CourseStatus, Media, MediaType, Sources } from './interfaces.courses'
+import { CourseInterface, CourseInterfaceModel, CourseStatus } from './interfaces.courses'
 import mongoose, { Schema } from 'mongoose'
 import { v4 } from "uuid"
 import { toJSON } from '../toJSON'
 import { paginate } from '../paginate'
-
-export const MediaSchema = new Schema<Media>(
-    {
-        awsFileKey: {
-            type: String
-        },
-        url: {
-            type: String,
-        },
-        mediaType: {
-            type: String,
-            enum: Object.values(MediaType),
-            default: MediaType.IMAGE
-        }
-    },
-    {
-        _id: false,
-        timestamps: false
-    }
-)
 
 const CourseSchema = new Schema<CourseInterface, CourseInterfaceModel>(
     {
@@ -39,49 +19,10 @@ const CourseSchema = new Schema<CourseInterface, CourseInterfaceModel>(
             enum: Object.values(CourseStatus),
             default: CourseStatus.DRAFT
         },
-        source: {
-            type: String,
-            enum: Object.values(Sources),
-            default: Sources.MANUAL
-        },
-        headerMedia: {
-            type: MediaSchema
-        },
-        owner: {
-            type: String
-        },
-        free: {
-            type: Boolean
-        },
-        bundle: {
-            type: Boolean
-        },
-        price: {
-            type: Number
-        },
-        settings: {
-            type: String,
-            ref: "Settings"
-        },
-        courses: {
-            type: [String],
-            default: [],
-            ref: "Courses"
-        },
         lessons: {
             type: [String],
             default: [],
             ref: "Lessons"
-        },
-        audiences: {
-            type: String,
-        },
-        currentCohort: {
-            type: String,
-            ref: "Cohorts"
-        },
-        private: {
-            type: Boolean
         },
     },
     {

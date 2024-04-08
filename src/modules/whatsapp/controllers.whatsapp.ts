@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import catchAsync from '../utils/catchAsync'
 import * as whatsappService from './service.whatsapp'
 import httpStatus from 'http-status'
+import { Enrollment } from '../courses'
 // import axios from 'axios'
 // import config from '../../config/config'
 
@@ -29,6 +30,7 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
 
     const userResponse = message.interactive.button_reply.title;
     let userCurrentIndex;
+    let enrollment = await Enrollment.findOne({userMobile: customerNumber});
 
     if (userResponse === 'start') {
       userCurrentIndex = 0
@@ -40,7 +42,12 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
       userCurrentIndex = message.interactive.button_reply.id
     }
 
-    await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse) 
+    if (enrollment) {
+      await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse, enrollment.course) 
+    } else {
+      await whatsappService.sendMessage(customerNumber, "you are not enrolled in this course")
+      
+    }
 
 
   } else {

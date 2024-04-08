@@ -1,46 +1,49 @@
-import { BlockInterface, BlockInterfaceModel } from './interfaces.section'
+import { SectionInterface, SectionInterfaceModel } from './interfaces.section'
 import mongoose, { Schema } from 'mongoose'
 import { v4 } from "uuid"
 import { toJSON } from '../toJSON'
 import { paginate } from '../paginate'
-import { MediaSchema } from './model.courses'
 
-const BlockSchema = new Schema<BlockInterface, BlockInterfaceModel>(
+const SectionSchema = new Schema<SectionInterface, SectionInterfaceModel>(
   {
     _id: { type: String, default: () => v4() },
-    title: {
+    type: {
       type: String,
       required: true
     },
     content: {
       type: String,
-      required: true
+    },
+    question: {
+      type: String,
+    },
+    options: {
+      type: Array,
+    },
+    correctAnswer: {
+      type: String,
+    },
+    answerExplanation: {
+      type: String,
     },
     lesson: {
       type: String,
       ref: "Lessons"
     },
-    quiz: {
-      type: String,
-      ref: "Quizzes"
-    },
     course: {
       type: String,
-      ref: "Courses"
+      ref: "Course"
     },
-    bodyMedia: {
-      type: MediaSchema
-    }
   },
   {
-    collection: 'blocks',
+    collection: 'sections',
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }
   }
 )
 
-BlockSchema.plugin(toJSON)
-BlockSchema.plugin(paginate)
+SectionSchema.plugin(toJSON)
+SectionSchema.plugin(paginate)
 
-const Blocks = mongoose.model<BlockInterface, BlockInterfaceModel>('Blocks', BlockSchema)
+const Sections = mongoose.model<SectionInterface, SectionInterfaceModel>('Sections', SectionSchema)
 
-export default Blocks
+export default Sections

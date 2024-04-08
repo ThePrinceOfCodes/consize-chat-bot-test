@@ -4,15 +4,15 @@ import { QueryResult } from '../paginate/paginate'
 
 interface Lesson {
   title: string
-  blocks: string[]
-  quizzes: string[]
+  description: string
+  sections: string[]
   course: string
-  description?: string
 }
 
 export interface CreateLessonPayload {
   title: string
   description?: string
+  course: string
 }
 
 export interface LessonInterface extends Lesson, Document {

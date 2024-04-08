@@ -1,31 +1,39 @@
 import { Document, Model } from 'mongoose'
 import { QueryResult } from '../paginate/paginate'
-import { Media } from './interfaces.courses'
 
+export enum SectionType {
+  TEXT = "text",
+  QUIZ = "quiz"
+}
 
-interface Block {
-  title: string
-  content: string
-  quiz?: string
-  bodyMedia?: Media
-  lesson: string
+interface Section {
+  type: string;
+  content?: string;
+  question?: string;
+  options?: string[];
+  correctAnswer?: string;
+  answerExplanation?: string;
+  lesson: string;
   course: string
 }
 
-export interface CreateBlockPayload {
-  title: string
-  content: string
-  quiz?: string 
-  bodyMedia?: Media
+export interface CreateSectionPayload {
+  type: string;
+  content?: string;
+  question?: string;
+  options?: string[];
+  correctAnswer?: string;
+  answerExplanation?: string;
+  lesson: string;
+  course: string;
 }
 
-export interface BlockInterface extends Block, Document {
+export interface SectionInterface extends Section, Document {
   _id: string
   createdAt?: Date
   updatedAt?: Date
 }
 
-
-export interface BlockInterfaceModel extends Model<BlockInterface> {
-  paginate (filter: Record<string, any>, options: Record<string, any>): Promise<QueryResult<BlockInterface>>
+export interface SectionInterfaceModel extends Model<SectionInterface> {
+  paginate (filter: Record<string, any>, options: Record<string, any>): Promise<QueryResult<SectionInterface>>
 }

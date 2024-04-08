@@ -1,6 +1,7 @@
 import axios from "axios";
 import config from '../../config/config'
 import { ContentInterface } from "./interfaces.whatsapp";
+import { courseService } from "../courses";
 
 export const contents: ContentInterface[] = [
 
@@ -222,9 +223,10 @@ const nextMessage = async (index:  number, content: ContentInterface | undefined
   }
 }
 
-export const handleMessage = async (index: any, to: number, userResponse: string) => {
-    
-  const content: ContentInterface | undefined = contents[index];
+export const handleMessage = async (index: any, to: number, userResponse: string, course: string) => {
+  
+  //get from redis
+  const content: ContentInterface | undefined = await courseService.getCourseFlow(course)
 
   if (userResponse === 'start') {
     await message(content,to,0)

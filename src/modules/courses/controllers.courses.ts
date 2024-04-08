@@ -2,9 +2,12 @@ import { Request, Response } from 'express'
 import catchAsync from '../utils/catchAsync'
 import * as courseService from './service.courses'
 import httpStatus from 'http-status'
+import { Enrollment } from '.'
+import { whatsappService } from '../whatsapp'
 
-export const createCourseManually = catchAsync(async (req: Request, res: Response) => {
-  const createdCourse = await courseService.createCourse(req.body, req.user.team)
+
+export const createCourse = catchAsync(async (req: Request, res: Response) => {
+  const createdCourse = await courseService.createCourse(req.body)
   res.status(httpStatus.CREATED).send({ data: createdCourse, message: "Course created successfully" })
 })
 
@@ -16,61 +19,27 @@ export const addLessonToCourse = catchAsync(async (req: Request, res: Response) 
   }
 })
 
-export const fetchCourseLessons = catchAsync(async (req: Request, res: Response) => {
-  if (req.params['course']) {
-    const lessons = await courseService.fetchCourseLessons({ course: req.params['course'] })
-    res.status(httpStatus.CREATED).send({ data: lessons, message: "Here are your lessons" })
-  }
-})
-
-export const fetchSingleCourseLesson = catchAsync(async (req: Request, res: Response) => {
-  if (req.params['lesson']) {
-    const lessons = await courseService.fetchSingleLesson({ lesson: req.params['lesson'] })
-    res.status(httpStatus.CREATED).send({ data: lessons, message: "Here you are" })
-  }
-})
-
-export const addBlockToLesson = catchAsync(async (req: Request, res: Response) => {
+export const addSectionToLesson = catchAsync(async (req: Request, res: Response) => {
   const { lesson, course } = req.params
 
   if (lesson && course) {
-    const createdBlock = await courseService.createBlock(req.body, lesson, course)
-    res.status(httpStatus.OK).send({ data: createdBlock, message: "Your block has been created successfully" })
+    const createdSection = await courseService.createSection(req.body, lesson, course)
+    await courseService.updateCourseFlow(course)
+    res.status(httpStatus.OK).send({ data: createdSection, message: "Your section has been created successfully" })
   }
 })
 
-export const fetchLessonsBlocks = catchAsync(async (req: Request, res: Response) => {
-  const { course, lesson } = req.params
-  if (lesson && course) {
-    const blocks = await courseService.fetchLessonsBlocks({ course: course, lesson: lesson })
-    res.status(httpStatus.OK).send({ data: blocks, message: "block retrieved successfully" })
-  }
-})
+export const enrollUser = catchAsync(async (req: Request, res: Response) => {
+  const { course } = req.params
+  const userMobile = req.body.userMobile
 
-export const fetchLessonsQuiz = catchAsync(async (req: Request, res: Response) => {
-  const { lesson } = req.params
-  if (lesson) {
-    const quizzes = await courseService.fetchLessonsQuiz(lesson)
-    res.status(httpStatus.OK).send({ data: quizzes, message: "quizzes retrieved successfully" })
-  }
-})
+  if (course) {
+    const enrollment = new Enrollment({ userMobile: userMobile, course: course}) 
+    await enrollment.save()
 
-export const addQuizToBlock = catchAsync(async (req: Request, res: Response) => {
-  const { block, lesson, course } = req.params
+    await whatsappService.sendWelcomeMessage(userMobile)
 
-  if (block && lesson && course) {
-    const quiz = await courseService.addBlockQuiz(req.body, lesson, course, block)
-    res.status(httpStatus.CREATED).send({ data: quiz, message: "Your quiz has been created successfully" })
-  }
-})
-
-
-export const addQuizToLesson = catchAsync(async (req: Request, res: Response) => {
-  const { lesson, course } = req.params
-
-  if (lesson && course) {
-    const quiz = await courseService.addLessonQuiz(req.body, lesson, course)
-    res.status(httpStatus.CREATED).send({ data: quiz, message: "Quiz added to lesson" })
+    res.status(httpStatus.OK).send({message: "user enrolled"})
   }
 })
 

@@ -18,13 +18,9 @@ const LessonSchema = new Schema<LessonInterface, LessonInterfaceModel>(
       type: String,
       ref: "Courses"
     },
-    quizzes: {
+    sections: {
       type: [String],
-      ref: "Quizzes"
-    },
-    blocks: {
-      type: [String],
-      ref: "Blocks"
+      ref: "Sections"
     }
   },
   {

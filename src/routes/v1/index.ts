@@ -1,8 +1,5 @@
 import express, { Request, Response, Router } from 'express'
 import coursesRoute from './courses.route'
-import lessonsRoute from './lessons.route'
-import sectionsRoute from './sections.route'
-import quizzesRoute from './quizzes.route'
 import webhookRoute from './webhook.route'
 import config from '../../config/config'
 
@@ -14,22 +11,9 @@ interface IRoute {
 }
 
 const defaultIRoute: IRoute[] = [
-
   {
     path: '/courses',
     route: coursesRoute
-  },
-  {
-    path: '/lessons',
-    route: lessonsRoute
-  },
-  {
-    path: '/sections',
-    route: sectionsRoute
-  },
-  {
-    path: '/quiz',
-    route: quizzesRoute
   },
    {
     path: '/webhook',
