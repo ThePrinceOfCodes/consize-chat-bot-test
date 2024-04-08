@@ -10,7 +10,7 @@ export const contents: ContentInterface[] = [
     type: "quiz",
     question: "What does HTML stand for?",
     options: ["Hypertext", "Markup Language", "Language"],
-    correctAnswer: "Hypertext Markup Language",
+    correctAnswer: "Hypertext",
     answerExplanation: "HTML stands for Hypertext Markup Language."
   },
   { type: "text", content: "Lesson 2: HTML Basics" },
@@ -218,11 +218,14 @@ export const handleMessage = async (index: any, to: number, userResponse: string
     
     const OptionsIndex:number = parseInt(data[0])
     const userChoice = data[1]
+    console.log(userChoice + "uc");
 
+    console.log(userResponse + " ur");
     const quizContent = contents[OptionsIndex]
-
+    console.log(quizContent);
     if (quizContent) {
-    
+    console.log(quizContent.correctAnswer + "ca");
+
     if (userChoice === quizContent.correctAnswer) {
         let message = "you got the right answer";
         await sendMessageAndButton(to, message, index.toString(), "next");
