@@ -128,6 +128,26 @@ export const sendMessageAndButton = async (to: number, message: any, bId: string
     });
 }
 
+export const sendMessage = async (to: number, message: string,): Promise<void> => {
+    await axios({
+      method: "POST",
+      url: `https://graph.facebook.com/v18.0/${config.business_id}/messages`,
+      headers: {
+        Authorization: `Bearer ${config.whatsAppToken}`,
+      },
+      data: {
+       messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: to,
+      type: "text",
+      text: {
+        preview_url: false,
+        body: message
+      }
+      },
+    });
+}
+
 export const sendQuiz = async (to: number, message: any, buttons: any , index: string): Promise<void> => {
    await axios({
       method: "POST",
@@ -235,7 +255,6 @@ export const handleMessage = async (index: any, to: number, userResponse: string
  
 }
      
-
 export const sendWelcomeMessage = async (to: number) => {
   const welcomeMessage: string = "Welcome... You've been enrolled to this course...Please click on the button to continue to course"
   await sendMessageAndButton(to, welcomeMessage, "0", "start" )

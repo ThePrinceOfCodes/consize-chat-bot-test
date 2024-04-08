@@ -30,7 +30,6 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     const userResponse = message.interactive.button_reply.title;
     let userCurrentIndex;
 
-console.log(userResponse);
     if (userResponse === 'start') {
       userCurrentIndex = 0
     } else
@@ -46,7 +45,7 @@ console.log(userResponse);
 
   } else {
     const customerNumber = message.from
-    await whatsappService.sendMessageAndButton(customerNumber, "please text message are not allowed, Kindly interact by using the buttons provided", "0", "next")
+    await whatsappService.sendMessage(customerNumber, "please text message are not allowed, Kindly interact by using the buttons provided" )
   }
 
   res.sendStatus(200);
