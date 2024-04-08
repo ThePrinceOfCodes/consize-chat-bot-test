@@ -98,7 +98,7 @@ export const sendQuiz = async (to: number, message: any, buttons: any , index: s
 const message = async (content: ContentInterface | undefined, to: number, index: number) => {
   if (content) {
     if (content.type === 'text') {
-      await sendMessageAndButton(to, content.content,index.toString(), "next");
+      await sendMessageAndButton(to, content.content, index.toString(), "next");
     }
 
     if (content.type === 'quiz') {
@@ -132,14 +132,23 @@ export const handleMessage = async (index: number, to: number, userResponse: str
   if (userResponse === 'next') {  
        await nextMessage(index+1, content,to)
   } else {
-    console.log(123344556778)
-    if (content) {
+    
+    const data : string[]= userResponse.split(" ")
+    
+    //@ts-ignore
+    const OptionsIndex:number = parseInt(data[0])
+    const userChoice = data[1]
+
+
+    //@ts-ignore
+    const quizContent = content[OptionsIndex]
+
+    if (quizContent) {
     console.log(123344556778);
-    const userChoice = userResponse;
 
     console.log(`user choice ${userChoice}`);
 
-    const correctAnswerIndex = content.correctAnswer;
+    const correctAnswerIndex = quizContent.correctAnswer;
 
     console.log(`correct answer ${correctAnswerIndex}`);
 
@@ -147,10 +156,11 @@ export const handleMessage = async (index: number, to: number, userResponse: str
         let message = "you got the right answer";
         await sendMessageAndButton(to, message, index.toString(), "next");
     } else {
-        let message = `Incorrect!: ${content.answerExplanation}`;
+        let message = `Incorrect!: ${quizContent.answerExplanation}`;
         await sendMessageAndButton(to, message, index.toString(), "next");
     }
-    await nextMessage(index+1, content, to);
+      
+    await nextMessage(OptionsIndex+1, content, to);
  }
   }
  

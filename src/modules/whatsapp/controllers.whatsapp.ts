@@ -33,12 +33,17 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
 
     if (userResponse === 'start') {
       userCurrentIndex = 0
-    } else {
+    } else
+    if (userResponse === 'next') {
       userCurrentIndex = parseInt(message.interactive.button_reply.id)
-      console.log(message.interactive.button_reply.id +"  qwerty");
+    } else
+    {
+      console.log(message.interactive.button_reply.id + "  qwerty");
+      userCurrentIndex = message.interactive.button_reply.id
     }
 
     await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse) 
+
 
   } else {
     const customerNumber = message.from
