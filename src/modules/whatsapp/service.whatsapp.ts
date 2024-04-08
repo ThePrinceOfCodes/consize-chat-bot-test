@@ -3,99 +3,6 @@ import config from '../../config/config'
 import { ContentInterface } from "./interfaces.whatsapp";
 import { courseService } from "../courses";
 
-export const contents: ContentInterface[] = [
-
-  { type: "text", content: "Lesson 1: Introduction to HTML" },
-  { type: "text", content: "In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML.In this lesson, you'll learn the basics of HTML." },
-  { 
-    type: "quiz",
-    question: "What does HTML stand for?",
-    options: ["Hypertext", "Markup Language", "Language"],
-    correctAnswer: "Hypertext",
-    answerExplanation: "HTML stands for Hypertext Markup Language."
-  },
-  { type: "text", content: "Lesson 2: HTML Basics" },
-  { type: "text", content: "In this lesson, you'll learn about the basic structure of HTML documents." },
-  { 
-    type: "quiz",
-    question: "Which tag is used to define the document type in HTML5?",
-    options: ["<!DOCTYPE html>", "<html>", "<meta>"],
-    correctAnswer: "<!DOCTYPE html>",
-    answerExplanation: "The correct tag to define the document type in HTML5 is <!DOCTYPE html>."
-  },
-  { type: "text", content: "Lesson 3: HTML Elements" },
-  { type: "text", content: "In this lesson, you'll learn about HTML elements and how to use them to structure your web pages." },
-  { 
-    type: "quiz",
-    question: "Which tag is used to create a paragraph in HTML?",
-    options: ["<p>", "<para>", "<paragraph>"],
-    correctAnswer: "<p>",
-    answerExplanation: "The <p> tag is used to create a paragraph in HTML."
-  },
-  { type: "text", content: "Lesson 4: HTML Attributes" },
-  { type: "text", content: "In this lesson, you'll learn about HTML attributes and how to use them to provide additional information about elements." },
-  { 
-    type: "quiz",
-    question: "Which attribute is used to specify the URL of an anchor link in HTML?",
-    options: ["href", "src", "link"],
-    correctAnswer: "href",
-    answerExplanation: "The href attribute is used to specify the URL of an anchor link in HTML."
-  },
-  { type: "text", content: "Lesson 5: HTML Formatting" },
-  { type: "text", content: "In this lesson, you'll learn about HTML formatting elements such as bold, italic, and underline." },
-  { 
-    type: "quiz",
-    question: "Which tag is used to make text bold in HTML?",
-    options: ["<b>", "<bold>", "<strong>"],
-    correctAnswer: "<strong>",
-    answerExplanation: "The <strong> tag is used to make text bold in HTML."
-  },
-  { type: "text", content: "Lesson 6: HTML Links" },
-  { type: "text", content: "In this lesson, you'll learn how to create hyperlinks in HTML to link to other web pages." },
-  { 
-    type: "quiz",
-    question: "Which tag is used to make text bold in HTML?",
-    options: ["<b>", "<bold>", "<strong>"],
-    correctAnswer: "<strong>",
-    answerExplanation: "The <strong> tag is used to make text bold in HTML."
-  },
-  { type: "text", content: "Lesson 7: HTML Images" },
-  { type: "text", content: "In this lesson, you'll learn how to add images to your HTML pages." },
-  { 
-    type: "quiz",
-    question: "Which tag is used to display an image in HTML?",
-    options: ["<img>", "<image>", "<picture>"],
-    correctAnswer: "<img>",
-    answerExplanation: "The <img> tag is used to display an image in HTML."
-  },
-  { type: "text", content: "Lesson 8: HTML Lists" },
-  { type: "text", content: "In this lesson, you'll learn how to create ordered and unordered lists in HTML." },
-  { 
-    type: "quiz",
-    question: "Which tag is used to create an unordered list in HTML?",
-    options: ["<ul>", "<ol>", "<li>"],
-    correctAnswer: "<ul>",
-    answerExplanation: "The <ul> tag is used to create an unordered list in HTML."
-  },
-  { type: "text", content: "Lesson 9: HTML Tables" },
-  { type: "text", content: "In this lesson, you'll learn how to create tables in HTML to display tabular data." },
-  { 
-    type: "quiz",
-    question: "What does the HTML <table> element represent?",
-    options: ["A table of data", "A section of text", "An image"],
-    correctAnswer: "A table of data",
-    answerExplanation: "The HTML <table> element represents a table of data."
-  },
-  { type: "text", content: "Lesson 10: HTML Forms" },
-  { type: "text", content: "In this lesson, you'll learn how to create forms in HTML to collect user input." },
-  { 
-    type: "quiz",
-    question: "Which attribute is used to specify the URL of the image to be displayed in HTML?",
-    options: ["src", "url", "link"],
-    correctAnswer: "src",
-    answerExplanation: "The src attribute is used to specify the URL of the image to be displayed in HTML."
-  }
-];
 
 export const sendMessageAndButton = async (to: number, message: any, bId: string, reply: string): Promise<void> => {
     await axios({
@@ -215,7 +122,7 @@ const message = async (content: ContentInterface | undefined, to: number, index:
   
 }
 
-const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number) => {
+const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number, contents: ContentInterface[] ) => {
   if (index < contents.length) {
     await message(content,to, index)
   } else {
@@ -226,35 +133,41 @@ const nextMessage = async (index:  number, content: ContentInterface | undefined
 export const handleMessage = async (index: any, to: number, userResponse: string, course: string) => {
   
   //get from redis
-  const content: ContentInterface | undefined = await courseService.getCourseFlow(course)
+  let contents: ContentInterface[] | undefined = await courseService.getCourseFlow(course)
 
-  console.log(content + " ...content");
+  if (contents) {
+    console.log(contents[index] + " ...content");
+    
   if (userResponse === 'start') {
-    await message(content,to,0)
+    await message(contents[index],to,0)
   }
   else
   if (userResponse === 'next') {  
-       await nextMessage(index+1, content,to)
+       await nextMessage(index+1, contents[index],to, contents)
   } else {
     
     const data = index.split(" ")
     
-    const OptionsIndex:number = parseInt(data[0])- 1
+    const OptionsIndex: number = parseInt(data[0]) - 1
+    const nextIndex: number = OptionsIndex+1
+    
     const userChoice = data[1]
     const quizContent = contents[OptionsIndex]
     
     if (quizContent) {
     if (userChoice === quizContent.correctAnswer) {
         let message = "you got the right answer";
-        await sendMessageAndButton(to, message, index.toString(), "next");
+        await sendMessageAndButton(to, message, nextIndex.toString(), "next");
     } else {
         let message = `Incorrect!: ${quizContent.answerExplanation}`;
-        await sendMessageAndButton(to, message, index.toString(), "next");
+        await sendMessageAndButton(to, message, nextIndex.toString(), "next");
     }
       
-    await nextMessage(OptionsIndex+1, content, to);
+    await nextMessage(OptionsIndex+1, contents[index], to, contents);
  }
   }
+  }
+ 
  
 }
      
