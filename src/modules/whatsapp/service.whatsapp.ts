@@ -136,7 +136,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
     const data = userResponse.split(" ")
     
     console.log(userResponse);
-    
+    console.log(index);
     //@ts-ignore
     const OptionsIndex:number = parseInt(data[0])
     const userChoice = data[1]
