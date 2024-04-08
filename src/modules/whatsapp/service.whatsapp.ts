@@ -247,5 +247,5 @@ export const handleMessage = async (index: any, to: number, userResponse: string
 
 export const sendWelcomeMessage = async (to: number) => {
   const welcomeMessage: string = "Welcome... You've been enrolled to this course...Please click on the button to continue to course"
-  await sendMessageAndButton(to, welcomeMessage, "start", "continue" )
+  await sendMessageAndButton(to, welcomeMessage, "start", "start" )
 }
