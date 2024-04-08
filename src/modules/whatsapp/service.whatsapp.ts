@@ -218,7 +218,7 @@ const nextMessage = async (index:  number, content: ContentInterface | undefined
   if (index < contents.length) {
     await message(content,to, index)
   } else {
-      await sendMessageAndButton(to, "End of the course.", "finish", "finish"); 
+      await sendMessage(to, "Congratulations, course completed successfully."); 
   }
 }
 
