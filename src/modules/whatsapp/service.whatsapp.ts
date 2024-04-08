@@ -3,15 +3,104 @@ import config from '../../config/config'
 import { ContentInterface } from "./interfaces.whatsapp";
 
 export const contents: ContentInterface[] = [
-    
-    { type: 'text', content: 'Welcome to the WhatsApp chat bot course!' },
-  { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd" },
-        { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd"},
-            { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd"},
-  { type: 'text', content: 'Congratulations! You have completed the course.' },
-       { type: 'quiz', question: 'What is the capital of France?', options: ['London', 'Paris', 'Berlin'], correctAnswer: 'Paris' , answerExplanation: "cahdhdsjshd"},
-      { type: 'text', content: 'Congratulations! You have completed the course.' }
-   
+  { type: "text", content: "Welcome to the WhatsApp chat bot course!" },
+  { 
+    type: "quiz",
+    question: "What is the capital of France?",
+    options: ["London", "Paris", "Berlin"],
+    correctAnswer: "Paris",
+    answerExplanation: "Paris is the capital of France."
+  },
+  { type: "text", content: "Lesson 1: Introduction to HTML" },
+  { type: "text", content: "In this lesson, you'll learn the basics of HTML." },
+  { 
+    type: "quiz",
+    question: "What does HTML stand for?",
+    options: ["Hypertext Markup Language", "Hyperlink and Text Markup Language", "Highly Textured Markup Language"],
+    correctAnswer: "Hypertext Markup Language",
+    answerExplanation: "HTML stands for Hypertext Markup Language."
+  },
+  { type: "text", content: "Lesson 2: HTML Basics" },
+  { type: "text", content: "In this lesson, you'll learn about the basic structure of HTML documents." },
+  { 
+    type: "quiz",
+    question: "Which tag is used to define the document type in HTML5?",
+    options: ["<!DOCTYPE html>", "<html>", "<meta>"],
+    correctAnswer: "<!DOCTYPE html>",
+    answerExplanation: "The correct tag to define the document type in HTML5 is <!DOCTYPE html>."
+  },
+  { type: "text", content: "Lesson 3: HTML Elements" },
+  { type: "text", content: "In this lesson, you'll learn about HTML elements and how to use them to structure your web pages." },
+  { 
+    type: "quiz",
+    question: "Which tag is used to create a paragraph in HTML?",
+    options: ["<p>", "<para>", "<paragraph>"],
+    correctAnswer: "<p>",
+    answerExplanation: "The <p> tag is used to create a paragraph in HTML."
+  },
+  { type: "text", content: "Lesson 4: HTML Attributes" },
+  { type: "text", content: "In this lesson, you'll learn about HTML attributes and how to use them to provide additional information about elements." },
+  { 
+    type: "quiz",
+    question: "Which attribute is used to specify the URL of an anchor link in HTML?",
+    options: ["href", "src", "link"],
+    correctAnswer: "href",
+    answerExplanation: "The href attribute is used to specify the URL of an anchor link in HTML."
+  },
+  { type: "text", content: "Lesson 5: HTML Formatting" },
+  { type: "text", content: "In this lesson, you'll learn about HTML formatting elements such as bold, italic, and underline." },
+  { 
+    type: "quiz",
+    question: "Which tag is used to make text bold in HTML?",
+    options: ["<b>", "<bold>", "<strong>"],
+    correctAnswer: "<strong>",
+    answerExplanation: "The <strong> tag is used to make text bold in HTML."
+  },
+  { type: "text", content: "Lesson 6: HTML Links" },
+  { type: "text", content: "In this lesson, you'll learn how to create hyperlinks in HTML to link to other web pages." },
+  { 
+    type: "quiz",
+    question: "What is the correct HTML for creating a hyperlink?",
+    options: ["<a href='http://example.com'>Example</a>", "<link href='http://example.com'>Example</link>", "<href='http://example.com'>Example</>"],
+    correctAnswer: "<a href='http://example.com'>Example</a>",
+    answerExplanation: "The correct HTML for creating a hyperlink is <a href='http://example.com'>Example</a>."
+  },
+  { type: "text", content: "Lesson 7: HTML Images" },
+  { type: "text", content: "In this lesson, you'll learn how to add images to your HTML pages." },
+  { 
+    type: "quiz",
+    question: "Which tag is used to display an image in HTML?",
+    options: ["<img>", "<image>", "<picture>"],
+    correctAnswer: "<img>",
+    answerExplanation: "The <img> tag is used to display an image in HTML."
+  },
+  { type: "text", content: "Lesson 8: HTML Lists" },
+  { type: "text", content: "In this lesson, you'll learn how to create ordered and unordered lists in HTML." },
+  { 
+    type: "quiz",
+    question: "Which tag is used to create an unordered list in HTML?",
+    options: ["<ul>", "<ol>", "<li>"],
+    correctAnswer: "<ul>",
+    answerExplanation: "The <ul> tag is used to create an unordered list in HTML."
+  },
+  { type: "text", content: "Lesson 9: HTML Tables" },
+  { type: "text", content: "In this lesson, you'll learn how to create tables in HTML to display tabular data." },
+  { 
+    type: "quiz",
+    question: "What does the HTML <table> element represent?",
+    options: ["A table of data", "A section of text", "An image"],
+    correctAnswer: "A table of data",
+    answerExplanation: "The HTML <table> element represents a table of data."
+  },
+  { type: "text", content: "Lesson 10: HTML Forms" },
+  { type: "text", content: "In this lesson, you'll learn how to create forms in HTML to collect user input." },
+  { 
+    type: "quiz",
+    question: "Which attribute is used to specify the URL of the image to be displayed in HTML?",
+    options: ["src", "url", "link"],
+    correctAnswer: "src",
+    answerExplanation: "The src attribute is used to specify the URL of the image to be displayed in HTML."
+  }
 ];
 
 
