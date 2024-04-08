@@ -141,7 +141,7 @@ export const handleMessage = async (index: number, to: number, userResponse: str
 
 
     //@ts-ignore
-    const quizContent = content[OptionsIndex]
+    const quizContent = contents[OptionsIndex]
 
     if (quizContent) {
     console.log(123344556778);
