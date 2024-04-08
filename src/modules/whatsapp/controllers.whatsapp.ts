@@ -31,14 +31,13 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
     let userCurrentIndex;
 
 console.log(userResponse);
-    if (userResponse === 'start') {
+    if (userResponse === 'continue') {
       userCurrentIndex = 0
     } else
     if (userResponse === 'next') {
       userCurrentIndex = parseInt(message.interactive.button_reply.id)
     } else
     {
-      console.log(message.interactive.button_reply.id + "  qwerty");
       userCurrentIndex = message.interactive.button_reply.id
     }
 

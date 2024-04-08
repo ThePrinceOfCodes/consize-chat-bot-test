@@ -103,7 +103,6 @@ export const contents: ContentInterface[] = [
   }
 ];
 
-
 export const sendMessageAndButton = async (to: number, message: any, bId: string, reply: string): Promise<void> => {
     await axios({
       method: "POST",
