@@ -32,29 +32,40 @@ export const createSection = async (sectionPayload: CreateSectionPayload, lesson
 
 //course flow
 export const updateCourseFlow = async (courseId: string) => {
-  let courseFlow = [];
+  try {
+    // Concurrently fetch sections and course
+    const [sections, course] = await Promise.all([
+      Sections.find({ course: courseId }),
+      Course.findById(courseId)
+    ]);
 
-  const sections = await Sections.find({ course: courseId }); 
-  const course = await Course.findById(courseId);
+    // Error handling if course is not found
+    if (!course) {
+      throw new Error('Course not found');
+    }
 
-  if (!course) {
-    return
+    const content = `course title: ${course.title}                   course description: ${course.description}`
+
+    // Construct course flow array
+    const courseFlow = [
+      { type: "text", content: content },
+      ...sections // Spread sections array directly
+    ];
+
+    // Cache courseFlow to Redis
+    await redisClient.set(`courseflow:${courseId}`, JSON.stringify(courseFlow));
+
+    return courseFlow;
+  } catch (error) {
+    // Handle errors
+    console.error('Error updating course flow:', error);
+    throw error; // Re-throw the error for the caller to handle
   }
-
-  courseFlow.push({ type: "text", content: course.title });
-
-  sections.forEach(section => {
-    courseFlow.push(section);
-  });
-
-  // Cache courseFlow to Redis
-  redisClient.set(`courseFlow:${courseId}`, JSON.stringify(courseFlow));
-
-  return courseFlow;
 }
 
 export const getCourseFlow = async (courseId: string) => {
-  const courseFlow = await redisClient.get(`courseFlow:${courseId}`);
+
+  const courseFlow = await redisClient.get(`courseflow:${courseId}`);
   
   if (!courseFlow) {
     return;

@@ -25,37 +25,38 @@ export const postWebhook = catchAsync(async (req: Request, res: Response) => {
   
   const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
 
-  if (message?.type === "interactive") {
-    const customerNumber = message.from
+  if (message) {
+    if (message?.type === "interactive") {
+      const customerNumber = message.from
 
-    const userResponse = message.interactive.button_reply.title;
-    let userCurrentIndex;
-    let enrollment = await Enrollment.findOne({userMobile: customerNumber});
+      const userResponse = message.interactive.button_reply.title;
+      let userCurrentIndex;
+      let enrollment = await Enrollment.findOne({userMobile: customerNumber});
 
-    console.log(enrollment + "   enrolment");
+      console.log(enrollment + "   enrolment");
 
-    if (userResponse === 'start') {
-      userCurrentIndex = 0
-    } else
-    if (userResponse === 'next') {
-      userCurrentIndex = parseInt(message.interactive.button_reply.id)
-    } else
-    {
-      userCurrentIndex = message.interactive.button_reply.id
-    }
+      if (userResponse === 'start') {
+        userCurrentIndex = 0
+      } else
+      if (userResponse === 'next') {
+        userCurrentIndex = parseInt(message.interactive.button_reply.id)
+      } else
+      {
+        userCurrentIndex = message.interactive.button_reply.id
+      }
 
-    if (enrollment) {
-      console.log(enrollment.course + " ...course");
-      await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse, enrollment.course) 
+      if (enrollment) {
+        await whatsappService.handleMessage(userCurrentIndex, customerNumber, userResponse, enrollment.course) 
+      } else {
+        await whatsappService.sendMessage(customerNumber, "you are not enrolled in this course")
+        
+      }
+
+
     } else {
-      await whatsappService.sendMessage(customerNumber, "you are not enrolled in this course")
-      
+      const customerNumber = message.from
+      await whatsappService.sendMessage(customerNumber, "please text message are not allowed, Kindly interact by using the buttons provided" )
     }
-
-
-  } else {
-    const customerNumber = message.from
-    await whatsappService.sendMessage(customerNumber, "please text message are not allowed, Kindly interact by using the buttons provided" )
   }
 
   res.sendStatus(200);

@@ -2,6 +2,8 @@ import axios from "axios";
 import config from '../../config/config'
 import { ContentInterface } from "./interfaces.whatsapp";
 import { courseService } from "../courses";
+import { redisClient } from '../courses/redis'
+
 
 
 export const sendMessageAndButton = async (to: number, message: any, bId: string, reply: string): Promise<void> => {
@@ -104,7 +106,7 @@ export const sendQuiz = async (to: number, message: any, buttons: any , index: s
     });
 }
 
-const message = async (content: ContentInterface | undefined, to: number, index: number) => {
+export const  message = async (content: ContentInterface | undefined, to: number, index: number) => {
   if (content) {
     if (content.type === 'text') {
       await sendMessageAndButton(to, content.content, index.toString(), "next");
@@ -123,7 +125,7 @@ const message = async (content: ContentInterface | undefined, to: number, index:
 }
 
 const nextMessage = async (index:  number, content: ContentInterface | undefined, to: number, contents: ContentInterface[] ) => {
-  if (index < contents.length) {
+  if (index <= contents.length) {
     await message(content,to, index)
   } else {
       await sendMessage(to, "Congratulations, course completed successfully."); 
@@ -136,10 +138,11 @@ export const handleMessage = async (index: any, to: number, userResponse: string
   let contents: ContentInterface[] | undefined = await courseService.getCourseFlow(course)
 
   if (contents) {
-    console.log(contents[index] + " ...content");
-    
-  if (userResponse === 'start') {
-    await message(contents[index],to,0)
+    console.log(contents[index]);
+    if (userResponse === 'start') {
+      await message(contents[index], to, 1)
+      await redisClient.set(`index`, JSON.stringify(index));
+
   }
   else
   if (userResponse === 'next') {  
